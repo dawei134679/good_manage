@@ -1,11 +1,10 @@
-package com.hkkj.modules.commodity.service.impl;
+package com.hkkj.modules.quotation.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hkkj.common.base.service.impl.BaseServiceImpl;
-import com.hkkj.modules.commodity.model.Commodity;
-import com.hkkj.modules.commodity.service.CommodityService;
-import org.apache.commons.lang3.StringUtils;
+import com.hkkj.modules.quotation.model.Qcommodity;
+import com.hkkj.modules.quotation.service.QcommodityService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
@@ -14,17 +13,17 @@ import java.util.List;
 
 /**
  * @author ldw
- * @create 2019-06-05 15:07
+ * @create 2019-08-30 15:07
  */
 @Transactional
 @Service
-public class CommdityServiceImpl extends BaseServiceImpl<Commodity> implements CommodityService {
+public class QcommodityServiceImpl extends BaseServiceImpl<Qcommodity> implements QcommodityService {
 
     @Override
-    public PageInfo<Commodity> findPage(Integer pageNum, Integer pageSize, String model, String name, String spareNo, String drawingNumber, String specification, String supplier) {
-        Example example = new Example(Commodity.class);
+    public PageInfo<Qcommodity> findPage(Integer pageNum, Integer pageSize) {
+        Example example = new Example(Qcommodity.class);
         Example.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotEmpty(model)) {
+       /* if (StringUtils.isNotEmpty(model)) {
             criteria.andLike("model", "%" + model.trim() + "%");
         }
         if (StringUtils.isNotEmpty(name)) {
@@ -41,12 +40,24 @@ public class CommdityServiceImpl extends BaseServiceImpl<Commodity> implements C
         }
         if (StringUtils.isNotEmpty(supplier)) {
             criteria.andLike("supplier", "%" + supplier.trim() + "%");
-        }
+        }*/
         //排序
         example.orderBy("createTime").desc();
         //分页
         PageHelper.startPage(pageNum, pageSize);
-        List<Commodity> commodityList = this.selectByExample(example);
-        return new PageInfo<Commodity>(commodityList);
+        List<Qcommodity> qcommodityList = this.selectByExample(example);
+        return new PageInfo<Qcommodity>(qcommodityList);
+    }
+
+    @Override
+    public List<Qcommodity> getQcommodityByQid(Long qid) {
+        Example example = new Example(Qcommodity.class);
+        Example.Criteria criteria = example.createCriteria();
+        example.orderBy("createTime").desc();
+        if (qid != null) {
+            criteria.andEqualTo("qid",qid);
+        }
+        List<Qcommodity> qcommodityList = this.selectByExample(example);
+        return qcommodityList;
     }
 }

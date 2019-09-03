@@ -43,7 +43,11 @@ public class Commodity extends BaseEntity {
 
     private Integer num;
 
-    private String content;
+    private String content1;
+
+    private String content2;
+
+    private String content3;
 
     private Integer type;
 

@@ -10,16 +10,18 @@ $(function () {
  w		弹出层宽度（缺省调默认值）
  h		弹出层高度（缺省调默认值）
  */
-/*物品添加-增加*/
-function admin_commodity_add(title,url,w,h){
+/*报价单-增加*/
+function admin_quotation_add(title,url,w,h){
     layer_show(title,url,w,h);
 }
 
-/**
- * 删除选中商品
- */
-function admin_commodity_del() {
+/*报价单-修改*/
+function admin_quotation_edit(title,url,w,h){
+    layer_show(title,url,w,h);
+}
 
+/* 删除选中报价单*/
+function admin_quotation_del() {
     //复选框选择id集合
     var selectedIds=[];
     $(".text-c :checkbox").each(function (index, ele) {
@@ -31,7 +33,6 @@ function admin_commodity_del() {
             selectedIds.removeObject(id);
         }
     });
-
     if(selectedIds == ""){
         errorMessage("请先选择一条记录!");
         return false;
@@ -42,7 +43,7 @@ function admin_commodity_del() {
         $.ajax({
             type:"DELETE",
             dataType:"json",
-            url: "/admin/commodity/batch/"+selectedIds,
+            url: "/admin/quotation/batch/"+selectedIds,
             data:{
                 "modifyTime":new Date().getTime()
             },
@@ -62,19 +63,19 @@ function admin_commodity_del() {
     });
 }
 
-
-/*管理员-编辑*/
-function admin_commodity_edit(title,url,w,h){
+/*报价单-详情*/
+function admin_quotation_commodity_info(title,url,w,h){
     layer_show(title,url,w,h);
 }
 
+
 /*数据导入*/
-/*function admin_commodity_excelImport(){
-    layer.confirm('确认要导入数据么？???',function(index){
+function admin_quotation_excelImport(){
+    layer.confirm('确认要导入数据么？',function(index){
         //此处请求后台程序，下方是成功后的前台处理……
         $.ajax({
             type:"GET",
-            url: "/admin/commodity/excelImport",
+            url: "/admin/quotation/excelImport",
             statusCode: {
                 200 : function(data){
                     succeedMessage(data.responseText);
@@ -86,38 +87,6 @@ function admin_commodity_edit(title,url,w,h){
                 500 : function(){
                     errorMessage('系统错误!');
                 }
-            }
-        });
-    });
-}*/
-
-/*new数据导入*/
-function admin_commodity_newExcelImport(){
-    //格式校验
-    var filePath = $("#uploadFile").val();
-    var fmtResult = false,fmts=['xlsx','xls'];
-    var fileFmt = filePath.substring(filePath.lastIndexOf('.')+1,filePath.length);
-    for (var i=0;i<fmts.length;i++) {
-        if(fileFmt.toLowerCase() == fmts[i].toLowerCase()){
-            fmtResult = true;
-            break;
-        }
-    }
-    if(!fmtResult){
-        layer.msg("您未上传文件，或者您上传文件类型有误！");
-        return false;
-    }
-    layer.confirm('确认要导入数据么？',function(index){
-        //此处请求后台程序，下方是成功后的前台处理……
-        //上传
-        $.ajaxFileUpload({
-            url : '/admin/commodity/newExcelImport',
-            secureuri : false,
-            fileElementId : "uploadFile",
-            dataType : 'json',
-            isAsyncResponse : false, // 使用异步响应结果
-            success : function(data, status) {
-                window.location.reload();
             }
         });
     });

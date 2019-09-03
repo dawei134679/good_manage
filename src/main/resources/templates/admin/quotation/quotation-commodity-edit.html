@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/common/common}">
+<head>
+    <title>添加商品 - 商品管理</title>
+</head>
+<body layout:fragment="content">
+<article class="page-container">
+    <form class="form form-horizontal" id="form-qcommodity-edit">
+        <input type="hidden" name="tokenForm" th:value="${#session.getAttribute('tokenForm')}"/>
+        <input type="hidden" th:value="*{qcommodity.id}" th:name="id"/>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>编码：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="code" th:name="code" th:value="*{qcommodity.code}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>型号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="model" th:name="model" th:value="*{qcommodity.code}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>商品名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="name" th:name="name" th:value="*{qcommodity.name}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备件编号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="spareNo" th:name="spareNo" th:value="*{qcommodity.spareNo}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单位：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="units" th:name="units" th:value="*{qcommodity.units}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>数量：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="number" class="input-text" value="" placeholder="" id="num" th:name="num" th:value="*{qcommodity.num}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单价：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="number" class="input-text" value="" placeholder="" id="price" th:name="price" th:value="*{qcommodity.price}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>折扣：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="discount" th:name="discount" th:value="*{qcommodity.discount}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>税率：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="taxrate" th:name="taxrate" th:value="*{qcommodity.taxrate}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>不含税价：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="number" class="input-text" value="" placeholder="" id="ntaxPrice" th:name="ntaxPrice" th:value="*{qcommodity.ntaxPrice}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>金额：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="number" class="input-text" value="" placeholder="" id="amount" th:name="amount" th:value="*{qcommodity.amount}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>产品品质：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="productQuality" th:name="productQuality" th:value="*{qcommodity.productQuality}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;"/>
+            </div>
+        </div>
+    </form>
+</article>
+
+<script type="text/javascript" th:src="@{/js/admin/quotation/quotation-commodity-edit.js}"></script>
+</body>
+</html>

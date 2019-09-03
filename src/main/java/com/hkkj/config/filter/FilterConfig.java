@@ -55,7 +55,7 @@ public class FilterConfig {
      * 注入Xss过滤器
      * @return
      */
-    @Bean
+    //@Bean
     public FilterRegistrationBean xssFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setDispatcherTypes(DispatcherType.REQUEST);

@@ -3,22 +3,16 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/common/common}">
 <head>
-    <title>添加商品 - 商品管理管理</title>
+    <title>添加商品 - 商品管理</title>
 </head>
 <body layout:fragment="content">
 <article class="page-container">
     <form class="form form-horizontal" id="form-commodity-add">
         <input type="hidden" name="tokenForm" th:value="${#session.getAttribute('tokenForm')}"/>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>商品名称：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>品牌：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="name" th:name="name"/>
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>编码：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="code" th:name="code"/>
+                <input type="text" class="input-text" value="" placeholder="" id="brand" th:name="brand"/>
             </div>
         </div>
         <div class="row cl">
@@ -28,19 +22,32 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>品牌：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>商品名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="brand" th:name="brand"/>
+                <input type="text" class="input-text" value="" placeholder="" id="name" th:name="name"/>
             </div>
         </div>
+        <!-- <div class="row cl">
+             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>编码：</label>
+             <div class="formControls col-xs-8 col-sm-9">
+                 <input type="text" class="input-text" value="" placeholder="" id="code" th:name="code"/>
+             </div>
+         </div>-->
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备件号：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备件编号：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="spareNo" th:name="spareNo"/>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>规格：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>货品图号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="drawingNumber"
+                       th:name="drawingNumber"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>货品规格：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="specification"
                        th:name="specification"/>
@@ -59,38 +66,45 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>供应商：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>供应单位：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="supplier" th:name="supplier"/>
             </div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>图纸号：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="drawingNumber"
-                       th:name="drawingNumber"/>
-            </div>
-        </div>
-        <div class="row cl">
+        <!--<div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>尺寸：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="size"
                        th:name="size"/>
             </div>
-        </div>
+        </div>-->
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>报价时间：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>报价日期：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" id="quotedTime"
+                <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id="quotedTime"
                        class="input-text Wdate" style="width:200px;" th:name="quotedTime" th:value="${quotedTime}"
                        readonly="readonly"/>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注1：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="content"
-                       th:name="content"/>
+                <input type="text" class="input-text" value="" placeholder="" id="content1"
+                       th:name="content1"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注2：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="content2"
+                       th:name="content2"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注3：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="content3"
+                       th:name="content3"/>
             </div>
         </div>
         <div class="row cl">

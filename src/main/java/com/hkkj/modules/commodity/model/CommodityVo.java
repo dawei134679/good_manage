@@ -3,26 +3,25 @@ package com.hkkj.modules.commodity.model;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.BaseRowModel;
 
-import java.math.BigDecimal;
-
 
 
 public class CommodityVo extends BaseRowModel  {
 
     @ExcelProperty(index = 0)
-    private String code;
+    private String brand;
 
     @ExcelProperty(index = 1)
     private String model;
 
     @ExcelProperty(index = 2)
-    private String brand;
-
-    @ExcelProperty(index = 3)
     private String name;
 
-    @ExcelProperty(index = 4)
+    @ExcelProperty(index = 3)
     private String spareNo;
+
+
+    @ExcelProperty(index = 4)
+    private String drawingNumber;
 
     @ExcelProperty(index = 5)
     private String specification;
@@ -37,23 +36,23 @@ public class CommodityVo extends BaseRowModel  {
     private String supplier;
 
     @ExcelProperty(index = 9)
-    private String drawingNumber;
-
-    @ExcelProperty(index = 10)
-    private String size;
-
-    @ExcelProperty(index = 11)
     private String quotedTime;
 
-    @ExcelProperty(index = 12)
-    private String content;
+    @ExcelProperty(index = 10)
+    private String content1;
 
-    public String getCode() {
-        return code;
+    @ExcelProperty(index = 11)
+    private String content2;
+
+    @ExcelProperty(index = 12)
+    private String content3;
+
+    public String getBrand() {
+        return brand;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public String getModel() {
@@ -62,14 +61,6 @@ public class CommodityVo extends BaseRowModel  {
 
     public void setModel(String model) {
         this.model = model;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
     }
 
     public String getName() {
@@ -86,6 +77,14 @@ public class CommodityVo extends BaseRowModel  {
 
     public void setSpareNo(String spareNo) {
         this.spareNo = spareNo;
+    }
+
+    public String getDrawingNumber() {
+        return drawingNumber;
+    }
+
+    public void setDrawingNumber(String drawingNumber) {
+        this.drawingNumber = drawingNumber;
     }
 
     public String getSpecification() {
@@ -120,22 +119,6 @@ public class CommodityVo extends BaseRowModel  {
         this.supplier = supplier;
     }
 
-    public String getDrawingNumber() {
-        return drawingNumber;
-    }
-
-    public void setDrawingNumber(String drawingNumber) {
-        this.drawingNumber = drawingNumber;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
     public String getQuotedTime() {
         return quotedTime;
     }
@@ -144,30 +127,46 @@ public class CommodityVo extends BaseRowModel  {
         this.quotedTime = quotedTime;
     }
 
-    public String getContent() {
-        return content;
+    public String getContent1() {
+        return content1;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContent1(String content1) {
+        this.content1 = content1;
+    }
+
+    public String getContent2() {
+        return content2;
+    }
+
+    public void setContent2(String content2) {
+        this.content2 = content2;
+    }
+
+    public String getContent3() {
+        return content3;
+    }
+
+    public void setContent3(String content3) {
+        this.content3 = content3;
     }
 
     @Override
     public String toString() {
         return "CommodityVo{" +
-                "code='" + code + '\'' +
+                "brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
-                ", brand='" + brand + '\'' +
                 ", name='" + name + '\'' +
                 ", spareNo='" + spareNo + '\'' +
+                ", drawingNumber='" + drawingNumber + '\'' +
                 ", specification='" + specification + '\'' +
                 ", taxPrice='" + taxPrice + '\'' +
                 ", price='" + price + '\'' +
                 ", supplier='" + supplier + '\'' +
-                ", drawingNumber='" + drawingNumber + '\'' +
-                ", size='" + size + '\'' +
                 ", quotedTime='" + quotedTime + '\'' +
-                ", content='" + content + '\'' +
+                ", content1='" + content1 + '\'' +
+                ", content2='" + content2 + '\'' +
+                ", content3='" + content3 + '\'' +
                 '}';
     }
 }

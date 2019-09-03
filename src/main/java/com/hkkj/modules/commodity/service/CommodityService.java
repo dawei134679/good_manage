@@ -10,5 +10,5 @@ import com.hkkj.modules.commodity.model.Commodity;
  */
 public interface CommodityService extends BaseService<Commodity> {
 
-    PageInfo<Commodity> findPage(Integer pageNum, Integer pageSize, String name, String code, String brand, String supplier);
+    PageInfo<Commodity> findPage(Integer pageNum, Integer pageSize, String model, String name, String spareNo, String drawingNumber, String specification, String supplier);
 }

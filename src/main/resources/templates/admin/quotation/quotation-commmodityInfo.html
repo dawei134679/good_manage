@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/common/common}">
+<head>
+    <title>添加报价单 - 报价单管理管理</title>
+</head>
+<body layout:fragment="content">
+<article class="page-container" id="printdiv">
+    <form class="form form-horizontal" id="form-commodity-add">
+        <input type="hidden" name="tokenForm" th:value="${#session.getAttribute('tokenForm')}"/>
+        <div class="text-c">
+            单号：
+            <input type="text" class="input-text" style="width:100px" placeholder="输入单号" name="orderNo"
+                   th:value="*{quotation.code}" readonly="readonly"/>
+            &nbsp;&nbsp;&nbsp;
+            客户：
+            <input type="text" class="input-text" style="width:100px" placeholder="输入客户" name="customer"
+                   th:value="*{quotation.customer}" readonly="readonly"/>
+            &nbsp;&nbsp;&nbsp;
+            业务员
+            <input type="text" class="input-text" style="width:100px" placeholder="输入业务员" name="salesman"
+                   th:value="*{quotation.salesman}" readonly="readonly"/>
+        </div>
+        <div class="text-c" style="margin-top: 20px;margin-bottom: 20px">
+            报价日期：
+            <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id="quotedTime"
+                   class="input-text Wdate" style="width:150px;" th:name="quotedTime" th:value="*{quotation.quotedTime}"
+                   readonly="readonly"/>
+            &nbsp;&nbsp;&nbsp;
+            备注：
+            <input type="text" class="input-text" style="width:250px" placeholder="输入备注" name="customer"
+                   th:value="*{quotation.content}" readonly="readonly"/>
+        </div>
+
+        <div class="cl pd-5 bg-1 bk-gray mt-20"id="d_operate">
+            <span class="l">
+				 <a href="javascript:;"
+                    th:onclick="'javascript:admin_quotation_commodity_add(\'添加报价单商品记录\',\'/admin/quotation/commmodityAdd/'+*{id}+'\',\'800\',\'650\');'"
+                    class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加</a>
+                    <a href="javascript:;" th:onclick="'javascript:admin_quotation_commodity_del();'"
+                       class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>删除</a>
+                    <a href="javascript:;" th:onclick="'javascript:windowprint();'" class="btn btn-default radius"><i
+                            class="Hui-iconfont">&#xe652;</i>打印</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="file" id="uploadFileCommodity" name="uploadFileCommodity" style="width: 160px"/>
+                    <a href="javascript:;" th:onclick="'javascript:admin_quotation_commodity_ExcelImport('+*{id}+');'"
+                       class="btn btn-success radius"><i class="Hui-iconfont">&#xe645;</i>导入</a>
+            </span>
+        </div>
+        <table class="table table-border table-bordered table-bg table-hover">
+            <thead>
+            <tr>
+                <th scope="col" colspan="15">
+                    <span>报价单商品列表</span>
+                </th>
+            </tr>
+            <tr class="text-c">
+                <th width="25"><input type="checkbox" name="" value=""/></th>
+                <th>序号</th>
+                <th>编码</th>
+                <th>型号</th>
+                <th>商品名称</th>
+                <th>备件编号</th>
+                <th>单位</th>
+                <th>数量</th>
+                <th>单价</th>
+                <th>折扣</th>
+                <th>税率</th>
+                <th>不含税价</th>
+                <th>金额</th>
+                <th>产品品质</th>
+                <th class="td-manage">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="text-c" th:each="qcommodity,qcommodityStat:${qcommodityList}" th:object="${qcommodity}">
+                <td><input type="checkbox" th:value="*{id}" id=""/></td>
+                <th th:text="${qcommodityStat.count}">1</th>
+                <td th:text="*{code}">2</td>
+                <td th:text="*{model}">2</td>
+                <td th:text="*{name}">2</td>
+                <td th:text="*{spareNo}">2</td>
+                <td th:text="*{units}">2</td>
+                <td th:text="*{num}">2</td>
+                <td th:text="*{price}">2</td>
+                <td th:text="*{discount}">2</td>
+                <td th:text="*{taxrate}">2</td>
+                <td th:text="*{ntaxPrice}">2</td>
+                <td th:text="*{amount}">2</td>
+                <td th:text="*{productQuality}">2</td>
+                <td class="td-manage">
+                    <a title="编辑" href="javascript:;"
+                       onclick="admin_edit('报价单编辑','quotation-edit.html','2','800','500')"
+                       th:onclick="'javascript:admin_quotation_commodity_edit(\'报价单编辑\',\'/admin/quotation/commodityEdit/'+*{id}+'\',\'800\',\'500\');'"
+                       class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+                </td>
+            </tr>
+            <tr class="text-c" style="background-color: #F5FAFE">
+                <td></td>
+                <td></td>
+                <td>
+                    合计：
+                </td>
+                <td></td>
+                <td th:text="*{commodityCountStr}">2</td>
+                <td></td>
+                <td></td>
+                <td th:text="*{allCommodityNum}">2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td th:text="*{allAmount}">2</td>
+                <td></td>
+                <td class="td-manage"></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</article>
+<script type="text/javascript" th:src="@{/js/common/jquery.browser.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/common/jquery.ajaxFileUpload.js}"></script>
+<script type="text/javascript" th:src="@{/js/admin/quotation/quotation-commodity-info.js}"></script>
+</body>
+</html>

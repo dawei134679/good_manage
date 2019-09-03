@@ -1,6 +1,5 @@
 package com.hkkj.modules.commodity.controller;
 
-import com.alibaba.excel.metadata.Sheet;
 import com.github.pagehelper.PageInfo;
 import com.hkkj.common.annotation.OperationLog;
 import com.hkkj.common.base.controller.BaseController;
@@ -17,8 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -33,22 +34,21 @@ public class CommodityController extends BaseController {
 
     private static final String BASE_PATH = "admin/commodity/";
 
-    private static final String DATA_PATH = "D:\\商品导入.xlsx";
-
-
     @Resource
     private CommodityService commodityService;
 
     @RequiresPermissions("commodity:list")
     @GetMapping
-    public String list(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, String name, String code, String brand, String supplier, ModelMap modelMap) {
-        log.debug("分页查询内容列表参数! pageNum = {}", pageNum);
-        PageInfo<Commodity> pageInfo = commodityService.findPage(pageNum, PAGESIZE, name, code, brand, supplier);
+    public String list(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, String model, String name, String spareNo, String drawingNumber, String specification, String supplier, ModelMap modelMap) {
+        log.info("分页查询内容列表参数! pageNum = {}", pageNum);
+        PageInfo<Commodity> pageInfo = commodityService.findPage(pageNum, PAGESIZE, model, name, spareNo, drawingNumber, specification, supplier);
         log.info("分页查询内容列表结果！ pageInfo = {}", pageInfo);
         modelMap.put("pageInfo", pageInfo);
+        modelMap.put("model", model);
         modelMap.put("name", name);
-        modelMap.put("code", code);
-        modelMap.put("brand", brand);
+        modelMap.put("spareNo", spareNo);
+        modelMap.put("drawingNumber", drawingNumber);
+        modelMap.put("specification", specification);
         modelMap.put("supplier", supplier);
         return BASE_PATH + "commodity-list";
     }
@@ -151,42 +151,45 @@ public class CommodityController extends BaseController {
         return messagesMap;
     }
 
+    /**
+     * 导入数据
+     *
+     * @param files
+     * @return
+     */
     @FormToken(save = true)
     @RequiresPermissions("commodity:excelImport")
-    @GetMapping("/excelImport")
-    public ResponseEntity<String>  excelImport() {
-        try {
-            log.info("导入数据");
-            //第一个1代表sheet1, 第二个1代表从第几行开始读取数据，行号最小值为0
-            Sheet sheet = new Sheet(1, 1, CommodityVo.class);
-            List<Object> objects = ExcelUtil.readLessThan1000RowBySheet(DATA_PATH,sheet);
-
-            for (Object o : objects){
-                //数据复制
-                Commodity commodity = new Commodity();
-                CommodityVo cv = (CommodityVo) o;
-
-                log.info("导入数据" + cv.toString());
-
-                BeanUtils.copyProperties(cv,commodity);
-                if (!StringUtils.isEmpty(cv.getPrice())){
-                    commodity.setPrice(new BigDecimal(cv.getPrice()));
+    @PostMapping("/newExcelImport")
+    public ResponseEntity<String> newExcelImport(@RequestParam("uploadFile") MultipartFile[] files) throws IOException {
+        log.info("导入数据");
+        if (files != null && files.length > 0) {
+            try {
+                MultipartFile file = files[0];
+                List<Object> objects = ExcelUtil.readExcel(file, new CommodityVo(), 1, 1);
+                for (Object o : objects) {
+                    //数据复制
+                    Commodity commodity = new Commodity();
+                    CommodityVo cv = (CommodityVo) o;
+                    log.info("导入数据" + cv.toString());
+                    BeanUtils.copyProperties(cv, commodity);
+                    if (!StringUtils.isEmpty(cv.getPrice())) {
+                        commodity.setPrice(new BigDecimal(cv.getPrice()));
+                    }
+                    if (!StringUtils.isEmpty(cv.getTaxPrice())) {
+                        commodity.setTaxPrice(new BigDecimal(cv.getTaxPrice()));
+                    }
+                    commodity.setStatus(1);
+                    commodity.setCreateTime(new Date());
+                    log.info("导入数据" + commodity.toString());
+                    //插入数据
+                    commodityService.save(commodity);
                 }
-                if (!StringUtils.isEmpty(cv.getTaxPrice())){
-                    commodity.setTaxPrice(new BigDecimal(cv.getTaxPrice()));
-                }
-                commodity.setStatus(1);
-                commodity.setCreateTime(new Date());
-                log.info("导入数据" + commodity.toString());
-                //插入数据
-                commodityService.save(commodity);
+                return ResponseEntity.ok("{msg:'导入成功'}");
+            } catch (Exception e) {
+                log.error("导入数据失败!", e);
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
-            return ResponseEntity.ok("导入成功！");
-        } catch (Exception e) {
-            log.error("导入数据失败!", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-
 }

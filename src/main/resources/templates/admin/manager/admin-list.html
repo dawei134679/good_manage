@@ -44,8 +44,8 @@
             <tr class="text-c">
                 <!--<th width="25"><input type="checkbox" name="" value=""/></th>-->
                 <th>登录名</th>
-                <th>手机</th>
-                <th>邮箱</th>
+               <!-- <th>手机</th>
+                <th>邮箱</th>-->
                 <th>角色</th>
                 <th>加入时间</th>
                 <th>是否已启用</th>
@@ -56,8 +56,8 @@
             <tr class="text-c" th:each="model:${pageInfo?.list}" th:object="${model}">
                 <!--<td><input type="checkbox" value="2" name=""/></td>-->
                 <td th:text="*{username}">d</td>
-                <td th:text="*{mobilePhone}">2</td>
-                <td th:text="*{email}">3</td>
+                <!--<td th:text="*{mobilePhone}">2</td>
+                <td th:text="*{email}">3</td>-->
                 <td th:text="*{roleName}"></td>
                 <td th:text="*{#dates.format(createTime, 'yyyy-MM-dd HH:mm')}">2014-6-11 11:11:42</td>
                 <td class="td-status">
