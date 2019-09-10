@@ -324,7 +324,6 @@ public class ExcelUtil {
      *
      * @param excel    文件
      * @param rowModel 实体类映射，继承 BaseRowModel 类
-     * @param sheetNo  sheet 的序号 从1开始
      * @return Excel 数据 list
      */
     public static List<Object> readExcel(MultipartFile excel, BaseRowModel rowModel) throws IOException {

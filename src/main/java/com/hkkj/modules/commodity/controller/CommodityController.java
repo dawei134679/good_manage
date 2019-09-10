@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,8 @@ import java.util.List;
 public class CommodityController extends BaseController {
 
     private static final String BASE_PATH = "admin/commodity/";
+
+    private static final String DATA_PATH = "D:\\商品数据列表.xlsx";
 
     @Resource
     private CommodityService commodityService;
@@ -67,13 +70,13 @@ public class CommodityController extends BaseController {
     }
 
     /**
-     * 保存内容
+     * 添加商品
      *
      * @param commodity
      * @return
      */
     @FormToken(remove = true)
-    @OperationLog(value = "添加内容")
+    @OperationLog(value = "添加商品")
     @RequiresPermissions("commodity:create")
     @ResponseBody
     @PostMapping("/save")
@@ -88,7 +91,7 @@ public class CommodityController extends BaseController {
     }
 
     /**
-     * 批量删除日志
+     * 批量删除商品
      *
      * @param ids
      * @return
@@ -115,7 +118,7 @@ public class CommodityController extends BaseController {
     }
 
     /**
-     * 跳转到编辑内容页面
+     * 跳转到编辑商品页面
      *
      * @param id
      * @param modelMap
@@ -131,7 +134,7 @@ public class CommodityController extends BaseController {
     }
 
     /**
-     * 更新内容
+     * 修改商品
      *
      * @param commodity
      * @return
@@ -192,4 +195,52 @@ public class CommodityController extends BaseController {
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+
+    /**
+     * 跳转到商品添加页面
+     *
+     * @return
+     */
+    @FormToken(save = true)
+    @RequiresPermissions("commodity:excelExport")
+    @GetMapping(value = "/excelExport")
+    public ResponseEntity<String> excelExport(ModelMap modelMap) {
+        log.info("导出数据!");
+        List<Commodity> allCommodityList = commodityService.getAllCommodityList();
+        ArrayList<String> head = new ArrayList<>();
+        head.add("品牌");
+        head.add("型号");
+        head.add("商品名称");
+        head.add("备件编号");
+        head.add("货品图号");
+        head.add("货品规格");
+        head.add("含税价");
+        head.add("现金价");
+        head.add("供应单位");
+        head.add("报价时间");
+        head.add("备注1");
+        head.add("备注1");
+        head.add("备注1");
+        ArrayList<List<Object>> datas = new ArrayList<>();
+        for (Commodity commodity : allCommodityList){
+            final ArrayList<Object> data = new ArrayList<>();
+            data.add(commodity.getBrand());
+            data.add(commodity.getModel());
+            data.add(commodity.getName());
+            data.add(commodity.getSpareNo());
+            data.add(commodity.getDrawingNumber());
+            data.add(commodity.getSpecification());
+            data.add(commodity.getTaxPrice());
+            data.add(commodity.getPrice());
+            data.add(commodity.getSupplier());
+            data.add(commodity.getQuotedTime());
+            data.add(commodity.getContent1());
+            data.add(commodity.getContent2());
+            data.add(commodity.getContent3());
+            datas.add(data);
+        }
+        ExcelUtil.writeBySimple(DATA_PATH,datas,head);
+        return ResponseEntity.ok("{msg:'导出成功'}");
+    }
+
 }

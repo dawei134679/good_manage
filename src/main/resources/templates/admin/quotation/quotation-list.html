@@ -20,34 +20,37 @@
 <form id="myForm" th:action="@{/admin/quotation}" th:method="get">
     <div class="page-container">
         <div class="text-c">
-            <div class="text-c">
-                单号：
-                <input type="text" class="input-text" style="width:100px" placeholder="输入单号" name="code"
-                       th:value="${code}"/>
-                &nbsp;&nbsp;&nbsp;
-                客户：
-                <input type="text" class="input-text" style="width:100px" placeholder="输入客户" name="customer"
-                       th:value="${customer}"/>
-                &nbsp;&nbsp;&nbsp;
-                业务员：
-                <input type="text" class="input-text" style="width:100px" placeholder="输入业务员" name="salesman"
-                       th:value="${salesman}"/>
-                &nbsp;&nbsp;&nbsp;
-                日期范围：
-                <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'dateMax\')}'})"
-                       id="dateMin" class="input-text Wdate" style="width:120px;" name="startTime"
-                       th:value="${startTime}"
-                       readonly="readonly"/>
-                -
-                <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'dateMin\')}'})"
-                       id="dateMax" class="input-text Wdate" style="width:120px;" name="endTime" th:value="${endTime}"
-                       readonly="readonly"/>
-                <button type="submit" class="btn btn-success">
-                    <i class="Hui-iconfont">&#xe665;</i>
-                    搜报价单
-                </button>
-            </div>
-            <div class="cl pd-5 bg-1 bk-gray mt-20">
+            单号：
+            <input type="text" class="input-text" style="width:100px" placeholder="输入单号" name="code"
+                   th:value="${code}"/>
+            &nbsp;&nbsp;&nbsp;
+            客户：
+            <input type="text" class="input-text" style="width:100px" placeholder="输入客户" name="customer"
+                   th:value="${customer}" aria-describedby="basic-addon1" list="category"/>
+            <datalist id="category">
+                <option th:each="customer:${customerList}" th:value="${customer.name}"
+                        th:text="${customer.name }"></option>
+            </datalist>
+            &nbsp;&nbsp;&nbsp;
+            业务员：
+            <input type="text" class="input-text" style="width:100px" placeholder="输入业务员" name="salesman"
+                   th:value="${salesman}"/>
+            &nbsp;&nbsp;&nbsp;
+            日期范围：
+            <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'dateMax\')}'})"
+                   id="dateMin" class="input-text Wdate" style="width:120px;" name="startTime"
+                   th:value="${startTime}"
+                   readonly="readonly"/>
+            -
+            <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'dateMin\')}'})"
+                   id="dateMax" class="input-text Wdate" style="width:120px;" name="endTime" th:value="${endTime}"
+                   readonly="readonly"/>
+            <button type="submit" class="btn btn-success">
+                <i class="Hui-iconfont">&#xe665;</i>
+                搜报价单
+            </button>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
             <span class="l">
 				<a href="javascript:;"
                    th:onclick="'javascript:admin_quotation_add(\'添加报价单\',\'/admin/quotation/add\',\'800\',\'500\');'"
@@ -55,61 +58,61 @@
                 <a href="javascript:;" th:onclick="'javascript:admin_quotation_del();'" class="btn btn-danger radius"><i
                         class="Hui-iconfont">&#xe6e2;</i>删除</a>
             </span>
-                <span class="r">共有数据：<strong th:text="${pageInfo?.total}" id="total">54</strong> 条</span>
-            </div>
-            <table class="table table-border table-bordered table-bg table-hover">
-                <thead>
-                <tr>
-                    <th scope="col" colspan="18">报价单列表</th>
-                </tr>
-                <tr class="text-c">
-                    <th width="25"><input type="checkbox" name="" value=""/></th>
-                    <th>序号</th>
-                    <th>单号</th>
-                    <th>客户</th>
-                    <th>业务员</th>
-                    <th>报价日期</th>
-                    <th>操作员</th>
-                    <th>录入日期</th>
-                    <th>审核人</th>
-                    <th>备注</th>
-                    <th>审核状态</th>
-                    <th width="100">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="text-c" th:each="model:${pageInfo?.list}" th:object="${model}">
-                    <td><input type="checkbox" th:value="*{id}" id=""/></td>
-                    <td th:text="${((pageInfo?.pageNum - 1) * pageInfo?.pageSize) + modelStat.count}">d</td>
-                    <td th:text="*{code}">2</td>
-                    <td th:text="*{customer}">2</td>
-                    <td th:text="*{salesman}">2</td>
-                    <td th:text="*{quotedTime}">2</td>
-                    <td th:text="*{operator}">d</td>
-                    <td th:text="*{#dates.format(createTime, 'yyyy-MM-dd HH:mm')}">2014-6-11 11:11:42</td>
-                    <td th:text="*{auditor}">2</td>
-                    <td th:text="*{content}">2</td>
-                    <td class="td-status" th:switch="*{auditorStatus}">
-                        <span class="label radius" th:case="'0'">未审核</span>
-                        <span class="label radius label-success" th:case="'1'">通过</span>
-                        <span class="label radius label-danger" th:case="'2'">拒绝</span>
-                    </td>
-                    <td class="td-manage">
-                        <a title="编辑" href="javascript:;"
-                           onclick="admin_edit('报价单编辑','quotation-edit.html','2','800','500')"
-                           th:onclick="'javascript:admin_quotation_edit(\'报价单编辑\',\'/admin/quotation/edit/'+*{id}+'\',\'800\',\'500\');'"
-                           class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
-                        &nbsp;&nbsp;
-                        <a title="查看报价单详情" href="javascript:;"
-                           onclick="admin_quotation_commodity_info('报价单详情展示','quotation-commmodityInfo.html','2','800','500')"
-                           th:onclick="'javascript:admin_quotation_commodity_info(\'报价单详情展示\',\'/admin/quotation/commodityInfo/'+*{id}+'\',\'1200\',\'800\');'"
-                           class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe667;</i></a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div th:replace="admin/common/page :: page"></div>
+            <span class="r">共有数据：<strong th:text="${pageInfo?.total}" id="total">54</strong> 条</span>
         </div>
+        <table class="table table-border table-bordered table-bg table-hover">
+            <thead>
+            <tr>
+                <th scope="col" colspan="18">报价单列表</th>
+            </tr>
+            <tr class="text-c">
+                <th width="25"><input type="checkbox" name="" value=""/></th>
+                <th>序号</th>
+                <th>单号</th>
+                <th>客户</th>
+                <th>业务员</th>
+                <th>报价日期</th>
+                <th>操作员</th>
+                <th>录入日期</th>
+                <th>审核人</th>
+                <th>备注</th>
+                <th>审核状态</th>
+                <th width="100">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="text-c" th:each="model:${pageInfo?.list}" th:object="${model}">
+                <td><input type="checkbox" th:value="*{id}" id=""/></td>
+                <td th:text="${((pageInfo?.pageNum - 1) * pageInfo?.pageSize) + modelStat.count}">d</td>
+                <td th:text="*{code}">2</td>
+                <td th:text="*{customer}">2</td>
+                <td th:text="*{salesman}">2</td>
+                <td th:text="*{quotedTime}">2</td>
+                <td th:text="*{operator}">d</td>
+                <td th:text="*{#dates.format(createTime, 'yyyy-MM-dd HH:mm')}">2014-6-11 11:11:42</td>
+                <td th:text="*{auditor}">2</td>
+                <td th:text="*{content}">2</td>
+                <td class="td-status" th:switch="*{auditorStatus}">
+                    <span class="label radius" th:case="'0'">未审核</span>
+                    <span class="label radius label-success" th:case="'1'">通过</span>
+                    <span class="label radius label-danger" th:case="'2'">拒绝</span>
+                </td>
+                <td class="td-manage">
+                    <a title="编辑" href="javascript:;"
+                       onclick="admin_edit('报价单编辑','quotation-edit.html','2','800','500')"
+                       th:onclick="'javascript:admin_quotation_edit(\'报价单编辑\',\'/admin/quotation/edit/'+*{id}+'\',\'800\',\'500\');'"
+                       class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+                    &nbsp;&nbsp;
+                    <a title="查看报价单详情" href="javascript:;"
+                       onclick="admin_quotation_commodity_info('报价单详情展示','quotation-commmodityInfo.html','2','800','500')"
+                       th:onclick="'javascript:admin_quotation_commodity_info(\'报价单详情展示\',\'/admin/quotation/commodityInfo/'+*{id}+'\');'"
+                       class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe665;</i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:replace="admin/common/page :: page"></div>
+    </div>
 </form>
 
 <script type="text/javascript" th:src="@{/js/common/page.js}"></script>

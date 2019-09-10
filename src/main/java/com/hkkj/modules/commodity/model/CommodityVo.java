@@ -19,7 +19,6 @@ public class CommodityVo extends BaseRowModel  {
     @ExcelProperty(index = 3)
     private String spareNo;
 
-
     @ExcelProperty(index = 4)
     private String drawingNumber;
 

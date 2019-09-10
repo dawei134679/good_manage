@@ -48,7 +48,7 @@ public class OperationLogAspect {
      * 定义日志切入点
      */
     @Pointcut("@annotation(com.hkkj.common.annotation.OperationLog)")
-    public void logPointCut(){
+    public void logPointCut() {
     }
 
     /**
@@ -82,7 +82,7 @@ public class OperationLogAspect {
             log.setExceptionDetail(null);
 
             localLog.set(log);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             //记录本地异常日志
             logger.error("==后置通知异常==");
             logger.error("异常信息:{}", e.getMessage());
@@ -91,6 +91,7 @@ public class OperationLogAspect {
 
     /**
      * 切入点return内容之后切入内容（可以用来对处理返回值做一些加工处理）
+     *
      * @param ret
      * @throws Throwable
      */
@@ -113,7 +114,7 @@ public class OperationLogAspect {
      */
     @AfterThrowing(pointcut = "logPointCut()", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
-        Map<String,String[]> requestParams = new HashMap<>();
+        Map<String, String[]> requestParams = new HashMap<>();
         //请求的参数
         Object[] args = joinPoint.getArgs();
 
@@ -129,7 +130,7 @@ public class OperationLogAspect {
 
             //保存数据库
             logService.save(log);
-        }  catch (Exception ex) {
+        } catch (Exception ex) {
             //记录本地异常日志
             logger.error("异常方法全路径:{},异常信息:{},请求参数:{}", getFullMethodName(joinPoint), e.getMessage(), JSONUtil.toJsonStr(args));
         }
@@ -161,7 +162,6 @@ public class OperationLogAspect {
 //    }
 
 
-
     /**
      * 获取注解中对方法的描述信息
      *
@@ -176,7 +176,7 @@ public class OperationLogAspect {
         Method method = signature.getMethod();
 
         OperationLog operationLog = method.getAnnotation(OperationLog.class);
-        if(null != operationLog){
+        if (null != operationLog) {
             description = operationLog.value();
         }
         return description;
@@ -184,10 +184,11 @@ public class OperationLogAspect {
 
     /**
      * 获取请求的方法名全路径
+     *
      * @param joinPoint
      * @return
      */
-    private static String getFullMethodName(JoinPoint joinPoint){
+    private static String getFullMethodName(JoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 
         //请求的方法名全路径

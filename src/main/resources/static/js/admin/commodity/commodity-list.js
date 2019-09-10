@@ -122,3 +122,25 @@ function admin_commodity_newExcelImport(){
         });
     });
 }
+
+/*数据导入*/
+function admin_commodity_excelExport(){
+    layer.confirm('确认要导出数据么？',function(index){
+        //此处请求后台程序，下方是成功后的前台处理……
+        $.ajax({
+            type:"GET",
+            url: "/admin/commodity/excelExport",
+            statusCode: {
+                200 : function(data){
+                    layer.msg("导出成功！");
+                },
+                404 : function(data){
+                    errorMessage(data.responseText);
+                },
+                500 : function(){
+                    errorMessage('系统错误!');
+                }
+            }
+        });
+    });
+}

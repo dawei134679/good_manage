@@ -18,34 +18,34 @@
     </a>
 </nav>
 <form id="myForm" th:action="@{/admin/commodity}" th:method="get">
-    <div class="text-c">
-        型号：
-        <input type="text" class="input-text" style="width:100px" placeholder="输入型号" name="model"
-               th:value="${model}"/>
-        &nbsp;&nbsp;&nbsp;
-        商品名称：
-        <input type="text" class="input-text" style="width:100px" placeholder="输入商品名称" name="name"
-               th:value="${name}"/>
-        &nbsp;&nbsp;&nbsp;备件编号：
-        <input type="text" class="input-text" style="width:100px" placeholder="输入备件号" name="spareNo"
-               th:value="${spareNo}"/>
-        &nbsp;&nbsp;&nbsp;货品图号：
-        <input type="text" class="input-text" style="width:100px" placeholder="输入货品图号" name="drawingNumber"
-               th:value="${drawingNumber}"/>
-        &nbsp;&nbsp;&nbsp;货品规格：
-        <input type="text" class="input-text" style="width:100px" placeholder="输入货品规格" name="specification"
-               th:value="${specification}"/>&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;供应单位：
-        <input type="text" class="input-text" style="width:100px" placeholder="输入供应单位" name="supplier"
-               th:value="${supplier}"/>
-        &nbsp;&nbsp;&nbsp;
-        <button type="submit" class="btn btn-success">
-            <i class="Hui-iconfont">&#xe665;</i>
-            搜商品
-        </button>
-    </div>
-
     <div class="page-container">
+        <div class="text-c">
+            型号：
+            <input type="text" class="input-text" style="width:100px" placeholder="输入型号" name="model"
+                   th:value="${model}"/>
+            &nbsp;&nbsp;&nbsp;
+            商品名称：
+            <input type="text" class="input-text" style="width:100px" placeholder="输入商品名称" name="name"
+                   th:value="${name}"/>
+            &nbsp;&nbsp;&nbsp;备件编号：
+            <input type="text" class="input-text" style="width:100px" placeholder="输入备件号" name="spareNo"
+                   th:value="${spareNo}"/>
+            &nbsp;&nbsp;&nbsp;货品图号：
+            <input type="text" class="input-text" style="width:100px" placeholder="输入货品图号" name="drawingNumber"
+                   th:value="${drawingNumber}"/>
+            &nbsp;&nbsp;&nbsp;货品规格：
+            <input type="text" class="input-text" style="width:100px" placeholder="输入货品规格" name="specification"
+                   th:value="${specification}"/>&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;供应单位：
+            <input type="text" class="input-text" style="width:100px" placeholder="输入供应单位" name="supplier"
+                   th:value="${supplier}"/>
+            &nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-success">
+                <i class="Hui-iconfont">&#xe665;</i>
+                搜商品
+            </button>
+        </div>
+
         <div class="cl pd-5 bg-1 bk-gray mt-20">
             <span class="l">
 				<a href="javascript:;"
@@ -53,6 +53,8 @@
                    class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加</a>
                 <a href="javascript:;" th:onclick="'javascript:admin_commodity_del();'" class="btn btn-danger radius"><i
                         class="Hui-iconfont">&#xe6e2;</i>删除</a>
+                <a href="javascript:;" th:onclick="'javascript:admin_commodity_excelExport();'"
+                   class="btn btn-secondary radius"><i class="Hui-iconfont">&#xe644;</i>导出</a><span style="color: red"> 注意：D盘下的《商品数据列表.xlsx》</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="file" id="uploadFile" name="uploadFile" style="width: 160px"/>
                 <a href="javascript:;" th:onclick="'javascript:admin_commodity_newExcelImport();'"

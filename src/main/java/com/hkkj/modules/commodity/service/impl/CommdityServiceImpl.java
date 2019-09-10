@@ -49,4 +49,13 @@ public class CommdityServiceImpl extends BaseServiceImpl<Commodity> implements C
         List<Commodity> commodityList = this.selectByExample(example);
         return new PageInfo<Commodity>(commodityList);
     }
+
+    @Override
+    public List<Commodity> getAllCommodityList() {
+        Example example = new Example(Commodity.class);
+        Example.Criteria criteria = example.createCriteria();
+        example.orderBy("createTime").desc();
+        List<Commodity> commodityList = this.selectByExample(example);
+        return commodityList;
+    }
 }

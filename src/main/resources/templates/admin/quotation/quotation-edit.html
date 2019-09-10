@@ -14,46 +14,57 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单号：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="code" th:name="code" th:value="*{quotation.code}"/>
+                <input type="text" class="input-text" value="" placeholder="" id="code" th:name="code"
+                       th:value="*{quotation.code}"/>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>客户：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="customer" th:name="customer" th:value="*{quotation.customer}"/>
+                <input type="text" class="input-text" value="" placeholder="" id="customer" th:name="customer"
+                       th:value="*{quotation.customer}" aria-describedby="basic-addon1" list="category"/>
+                <datalist id="category">
+                    <option th:each="customer:${customerList}" th:value="${customer.name}"
+                            th:text="${customer.name }"></option>
+                </datalist>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>业务员：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="salesman" th:name="salesman" th:value="*{quotation.salesman}"/>
+                <input type="text" class="input-text" value="" placeholder="" id="salesman" th:name="salesman"
+                       th:value="*{quotation.salesman}"/>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>报价日期：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" id="quotedTime"
-                       class="input-text Wdate" style="width:200px;" th:name="quotedTime" th:value="*{quotation.quotedTime}"
+                       class="input-text Wdate" style="width:200px;" th:name="quotedTime"
+                       th:value="*{quotation.quotedTime}"
                        readonly="readonly"/>
             </div>
         </div>
-        <div class="row cl">
+        <!--<div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>操作员：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="operator" th:name="operator" th:value="*{quotation.operator}"/>
+                <input type="text" class="input-text" value="" placeholder="" id="operator" th:name="operator"
+                       th:value="*{quotation.operator}"/>
             </div>
-        </div>
+        </div>-->
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>审核人：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="auditor" th:name="auditor" th:value="*{quotation.auditor}"/>
+                <input type="text" class="input-text" value="" placeholder="" id="auditor" th:name="auditor"
+                       th:value="*{quotation.auditor}"/>
             </div>
         </div>
 
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="content" th:name="content" th:value="*{quotation.content}"/>
+                <input type="text" class="input-text" value="" placeholder="" id="content" th:name="content"
+                       th:value="*{quotation.content}"/>
             </div>
         </div>
         <div class="row cl">

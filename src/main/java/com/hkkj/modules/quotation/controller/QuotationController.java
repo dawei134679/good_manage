@@ -5,11 +5,14 @@ import com.hkkj.common.annotation.OperationLog;
 import com.hkkj.common.base.controller.BaseController;
 import com.hkkj.common.security.token.FormToken;
 import com.hkkj.common.util.ExcelUtil;
+import com.hkkj.common.util.ShiroUtils;
 import com.hkkj.modules.quotation.model.Qcommodity;
 import com.hkkj.modules.quotation.model.QcommodityVo;
 import com.hkkj.modules.quotation.model.Quotation;
 import com.hkkj.modules.quotation.service.QcommodityService;
 import com.hkkj.modules.quotation.service.QuotationService;
+import com.hkkj.modules.sys.model.Customer;
+import com.hkkj.modules.sys.service.CustomerService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -42,13 +45,18 @@ public class QuotationController extends BaseController {
     @Resource
     private QcommodityService qcommodityService;
 
+    @Resource
+    private CustomerService customerService;
+
     @RequiresPermissions("quotation:list")
     @GetMapping
     public String list(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, String code, String customer, String salesman, String startTime, String endTime, ModelMap modelMap) {
         log.info("分页查询报价单列表参数! pageNum = {}", pageNum);
         PageInfo<Quotation> pageInfo = quotationService.findPage(pageNum, PAGESIZE, code, customer, salesman, startTime, endTime);
-        log.info("分页查询内容列表结果！ pageInfo = {}", pageInfo);
-        modelMap.put("pageInfo", pageInfo); 
+        log.info("分页查询报价单列表结果！ pageInfo = {}", pageInfo);
+        List<Customer> customerList = customerService.getCustomerList();
+        modelMap.put("pageInfo", pageInfo);
+        modelMap.put("customerList", customerList);
         modelMap.put("code", code);
         modelMap.put("customer", customer);
         modelMap.put("salesman", salesman);
@@ -67,6 +75,8 @@ public class QuotationController extends BaseController {
     @GetMapping(value = "/add")
     public String add(ModelMap modelMap) {
         log.info("跳转到报价单添加页面!");
+        List<Customer> customerList = customerService.getCustomerList();
+        modelMap.put("customerList", customerList);
         return BASE_PATH + "quotation-add";
     }
 
@@ -85,6 +95,7 @@ public class QuotationController extends BaseController {
         log.info("保存报价单!" + quotation.toString());
         ModelMap messagesMap = new ModelMap();
         quotation.setCreateTime(new Date());
+        quotation.setOperator(ShiroUtils.getUserName());
         quotationService.save(quotation);
         messagesMap.put("status", SUCCESS);
         messagesMap.put("message", "添加成功!");
@@ -130,7 +141,9 @@ public class QuotationController extends BaseController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, ModelMap modelMap) {
         Quotation quotation = quotationService.findById(id);
+        List<Customer> customerList = customerService.getCustomerList();
         modelMap.put("quotation", quotation);
+        modelMap.put("customerList", customerList);
         return BASE_PATH + "quotation-edit";
     }
 
@@ -166,24 +179,24 @@ public class QuotationController extends BaseController {
     @GetMapping(value = "/commodityInfo/{id}")
     public String quotationCommmodityInfo(@PathVariable("id") Long id, ModelMap modelMap) {
         Quotation quotation = quotationService.findById(id);
-        List<Qcommodity> qcommodityList= qcommodityService.getQcommodityByQid(id);
+        List<Qcommodity> qcommodityList = qcommodityService.getQcommodityByQid(id);
         modelMap.put("quotation", quotation);
         modelMap.put("qcommodityList", qcommodityList);
         Integer commodityCount = 0;
         Integer allCommodityNum = 0;
         BigDecimal allAmount = BigDecimal.valueOf(0);
-        if (null != qcommodityList){
+        if (null != qcommodityList) {
             commodityCount = qcommodityList.size();
-            for (Qcommodity qcommodity : qcommodityList){
-                if (null != qcommodity.getAmount()){
+            for (Qcommodity qcommodity : qcommodityList) {
+                if (null != qcommodity.getAmount()) {
                     allAmount = allAmount.add(qcommodity.getAmount());
                 }
-                if (null != qcommodity.getNum()){
-                    allCommodityNum+=qcommodity.getNum();
+                if (null != qcommodity.getNum()) {
+                    allCommodityNum += qcommodity.getNum();
                 }
             }
         }
-        String commodityCountStr = commodityCount+"条记录";
+        String commodityCountStr = commodityCount + "条记录";
         modelMap.put("commodityCountStr", commodityCountStr);
         modelMap.put("allAmount", allAmount);
         modelMap.put("allCommodityNum", allCommodityNum);
@@ -199,9 +212,9 @@ public class QuotationController extends BaseController {
      */
     @FormToken(save = true)
     @GetMapping(value = "/commmodityAdd/{id}")
-    public String addCommodity(@PathVariable("id") Long id,ModelMap modelMap) {
+    public String addCommodity(@PathVariable("id") Long id, ModelMap modelMap) {
         Quotation quotation = quotationService.findById(id);
-        modelMap.put("qid",id);
+        modelMap.put("qid", id);
         log.info("跳转到商品添加页面!");
         return BASE_PATH + "quotation-commodity-add";
     }
@@ -296,36 +309,36 @@ public class QuotationController extends BaseController {
      */
     @FormToken(save = true)
     @OperationLog(value = "导入报价单商品")
-   // @RequiresPermissions("quotation:commodityExcelImport")
+    // @RequiresPermissions("quotation:commodityExcelImport")
     @PostMapping("/commodityExcelImport")
     public ResponseEntity<String> newExcelImport(@RequestParam("uploadFileCommodity") MultipartFile[] files, Long qid) throws IOException {
-        log.info("导入数据，报价单qid : "+qid);
-        if(files != null && files.length > 0){
-           /* try {*/
-                MultipartFile file = files[0];
-                List<Object> objects = ExcelUtil.readExcel(file, new QcommodityVo(),1,1);
-                for (Object o : objects) {
-                    //数据复制
-                    Qcommodity qcommodity = new Qcommodity();
-                    qcommodity.setQid(qid);
-                    QcommodityVo qv = (QcommodityVo) o;
-                    log.info("导入数据" + qv.toString());
-                    BeanUtils.copyProperties(qv, qcommodity);
-                    if (!StringUtils.isEmpty(qv.getPrice())) {
-                        qcommodity.setPrice(new BigDecimal(qv.getPrice()));
-                    }
-                    if (!StringUtils.isEmpty(qv.getNtaxPrice())) {
-                        qcommodity.setNtaxPrice(new BigDecimal(qv.getNtaxPrice()));
-                    }
-                    if (!StringUtils.isEmpty(qv.getAmount())) {
-                        qcommodity.setAmount(new BigDecimal(qv.getAmount()));
-                    }
-                    qcommodity.setCreateTime(new Date());
-                    log.info("导入数据" + qcommodity.toString());
-                    //插入数据
-                    qcommodityService.save(qcommodity);
+        log.info("导入数据，报价单qid : " + qid);
+        if (files != null && files.length > 0) {
+            /* try {*/
+            MultipartFile file = files[0];
+            List<Object> objects = ExcelUtil.readExcel(file, new QcommodityVo(), 1, 1);
+            for (Object o : objects) {
+                //数据复制
+                Qcommodity qcommodity = new Qcommodity();
+                qcommodity.setQid(qid);
+                QcommodityVo qv = (QcommodityVo) o;
+                log.info("导入数据" + qv.toString());
+                BeanUtils.copyProperties(qv, qcommodity);
+                if (!StringUtils.isEmpty(qv.getPrice())) {
+                    qcommodity.setPrice(new BigDecimal(qv.getPrice()));
                 }
-                return ResponseEntity.ok("{msg:'导入成功'}");
+                if (!StringUtils.isEmpty(qv.getNtaxPrice())) {
+                    qcommodity.setNtaxPrice(new BigDecimal(qv.getNtaxPrice()));
+                }
+                if (!StringUtils.isEmpty(qv.getAmount())) {
+                    qcommodity.setAmount(new BigDecimal(qv.getAmount()));
+                }
+                qcommodity.setCreateTime(new Date());
+                log.info("导入数据" + qcommodity.toString());
+                //插入数据
+                qcommodityService.save(qcommodity);
+            }
+            return ResponseEntity.ok("{msg:'导入成功'}");
             /*} catch (Exception e) {
                 log.error("导入数据失败!", e);
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

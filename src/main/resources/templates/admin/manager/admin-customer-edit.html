@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/common/common}">
+<head>
+    <title>修改管理员 - 管理员管理</title>
+</head>
+
+<body layout:fragment="content">
+<article class="page-container">
+    <form class="form form-horizontal" id="form-customer-edit" method="post">
+        <input type="hidden" name="tokenForm" th:value="${#session.getAttribute('tokenForm')}"/>
+        <input type="hidden" th:value="*{customer.id}" th:name="id"/>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>客户名：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" name="name" th:name="name" id="name" th:value="*{customer.name}"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <div class="radio-box">
+                    <input type="radio" id="sex-1" checked="checked" name="sex" th:name="sex" th:value="1" th:checked="*{customer.sex}"/>
+                    <label for="sex-1">男</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="sex-2" checked="checked" name="sex" th:name="sex" th:value="0" th:checked="*{!customer.sex}"/>
+                    <label for="sex-2">女</label>
+                </div>
+            </div>
+        </div>
+        <!--<div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="mobilePhone" name="mobilePhone" th:name="mobilePhone"/>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" placeholder="@" name="email" id="email" th:name="email"/>
+            </div>
+        </div>-->
+        <  <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注：</label>
+        <div class="formControls col-xs-8 col-sm-9">
+            <input type="text" class="input-text" value="" placeholder="" id="content" name="content"
+                   th:name="content" th:value="*{customer.content}"/>
+        </div>
+    </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;"/>
+            </div>
+        </div>
+    </form>
+</article>
+
+<script type="text/javascript" th:src="@{/js/admin/manager/admin-customer-edit.js}"></script>
+</body>
+</html>
