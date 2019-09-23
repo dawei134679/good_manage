@@ -102,11 +102,16 @@
                        onclick="admin_edit('报价单编辑','quotation-edit.html','2','800','500')"
                        th:onclick="'javascript:admin_quotation_edit(\'报价单编辑\',\'/admin/quotation/edit/'+*{id}+'\',\'800\',\'500\');'"
                        class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
-                    &nbsp;&nbsp;
                     <a title="查看报价单详情" href="javascript:;"
                        onclick="admin_quotation_commodity_info('报价单详情展示','quotation-commmodityInfo.html','2','800','500')"
                        th:onclick="'javascript:admin_quotation_commodity_info(\'报价单详情展示\',\'/admin/quotation/commodityInfo/'+*{id}+'\');'"
                        class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe665;</i></a>
+                    <a title="审核通过" href="javascript:;"
+                       th:onclick="'javascript:admin_quotation_aduit('+*{id}+',1'+');'"
+                       class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e1;</i></a>
+                    <a title="审核拒绝" href="javascript:;"
+                       th:onclick="'javascript:admin_quotation_aduit('+*{id}+',2'+');'"
+                       class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6dd;</i></a>
                 </td>
             </tr>
             </tbody>

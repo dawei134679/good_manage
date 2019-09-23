@@ -96,3 +96,34 @@ function admin_quotation_excelImport(){
         });
     });
 }
+
+/*报价单-审核*/
+function admin_quotation_aduit(id,status){
+    var str = "确认审核通过吗？"
+    if(status == '2'){
+        var str = "确认审核拒绝吗？"
+    }
+    var confirm = layer.confirm(str ,function(index){
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url: "/admin/quotation/auditQuotation",
+            data:{
+                "id": id,
+                "auditorStatus": status,
+            },
+            statusCode: {
+                200 : function(data){
+                    succeedMessage(data.responseText);
+                    window.location.reload();
+                },
+                404 : function(data){
+                    errorMessage(data.responseText);
+                },
+                500 : function(){
+                    errorMessage('系统错误!');
+                }
+            }
+        });
+    });
+}

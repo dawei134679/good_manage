@@ -96,10 +96,29 @@ public class QuotationController extends BaseController {
         ModelMap messagesMap = new ModelMap();
         quotation.setCreateTime(new Date());
         quotation.setOperator(ShiroUtils.getUserName());
-        quotationService.save(quotation);
+        quotationService.saveSelective(quotation);
         messagesMap.put("status", SUCCESS);
         messagesMap.put("message", "添加成功!");
         return messagesMap;
+    }
+
+    /**
+     * 报价单审核
+     * @param quotation
+     * @return
+     */
+    @OperationLog(value = "审核报价单")
+    @RequiresPermissions("quotation:audit")
+    @PostMapping(value = "/auditQuotation")
+    public ResponseEntity<String> auditQuotation(Quotation quotation) {
+        try {
+            quotation.setAuditor(ShiroUtils.getUserName());
+            log.info("审核报价单!" + quotation.toString());
+            quotationService.updateSelective(quotation);
+            return ResponseEntity.ok("操作成功!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     /**
@@ -347,5 +366,4 @@ public class QuotationController extends BaseController {
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-
 }
