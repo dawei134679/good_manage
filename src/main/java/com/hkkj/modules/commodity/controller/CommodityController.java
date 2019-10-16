@@ -219,8 +219,8 @@ public class CommodityController extends BaseController {
         head.add("供应单位");
         head.add("报价时间");
         head.add("备注1");
-        head.add("备注1");
-        head.add("备注1");
+        head.add("备注2");
+        head.add("备注3");
         ArrayList<List<Object>> datas = new ArrayList<>();
         for (Commodity commodity : allCommodityList){
             final ArrayList<Object> data = new ArrayList<>();
