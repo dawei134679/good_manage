@@ -19,7 +19,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
         <thymeleaf-layout-dialect.version>2.0.0</thymeleaf-layout-dialect.version>
-        <shiro.version>1.3.2</shiro.version>
+        <shiro.version>1.7.1</shiro.version>
         <thymeleaf-shiro.version>2.0.0</thymeleaf-shiro.version>
         <hutool.version>2.16.0</hutool.version>
         <commons-io.version>2.4</commons-io.version>
